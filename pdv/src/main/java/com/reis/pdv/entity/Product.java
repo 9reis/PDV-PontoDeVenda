@@ -1,5 +1,7 @@
 package com.reis.pdv.entity;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,22 +13,24 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//@Getter
-//@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Table(name = "product")
 @Entity
-@Table(name = "user")
-public class User {
+public class Product {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(length = 100, nullable = false)
-	private String name;
+	private String description;
 	
-	private boolean isEnabled;
+	@Column(length = 20, precision = 20, scale = 2, nullable = false)
+	private BigDecimal price;
 	
+	@Column(nullable = false)
+	private int quantity;
+
 }
