@@ -43,7 +43,7 @@ public class SaleService {
 		
 		newSale = saleRepository.save(newSale);
 		
-		//itemns
+		//items
 		saveItemSale(itemSale, newSale);
 		
 		return newSale.getId();
