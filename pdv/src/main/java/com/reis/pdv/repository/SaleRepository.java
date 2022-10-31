@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.reis.pdv.entity.Sale;
 
 @Repository
-public interface Salerepository extends JpaRepository<Sale, Long>{
+public interface SaleRepository extends JpaRepository<Sale, Long>{
 
 }
