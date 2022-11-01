@@ -66,9 +66,9 @@ public class SaleService {
 			productInfoDTO.setQuantity(item.getQuantity());
 			return productInfoDTO;
 		}).collect(Collectors.toList());
-		
-		
 	}
+	
+	
 	
 	@Transactional
 	public long save(SaleDTO sale) {
@@ -97,7 +97,7 @@ public class SaleService {
 		}
 	};
 	
-	private List<ItemSale> getItemSale(List<ProductDTO> products){
+	private List<ItemSale> getItemSale(List<ProductDTO> products) {
 		
 		return products.stream().map(item -> {
 			Product product = productRepository.getReferenceById(item.getProductid());
@@ -105,6 +105,17 @@ public class SaleService {
 			ItemSale itemSale = new ItemSale();
 			itemSale.setProduct(product);
 			itemSale.setQuantity(item.getQuantity());
+			
+			if(product.getQuantity() == 0) {
+				throw new IllegalArgumentException();
+			}else if ( product.getQuantity() < item.getQuantity()){
+				throw new IllegalArgumentException();
+			}
+			
+			int total = product.getQuantity() - item.getQuantity();
+			product.setQuantity(total);
+			productRepository.save(product);
+			
 			
 			return itemSale;
 			
