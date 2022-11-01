@@ -1,6 +1,7 @@
 package com.reis.pdv.service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,7 +10,9 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.reis.pdv.dto.ProductDTO;
+import com.reis.pdv.dto.ProductInfoDTO;
 import com.reis.pdv.dto.SaleDTO;
+import com.reis.pdv.dto.SaleInfoDTO;
 import com.reis.pdv.entity.ItemSale;
 import com.reis.pdv.entity.Product;
 import com.reis.pdv.entity.Sale;
@@ -43,7 +46,29 @@ public class SaleService {
 	 }
 	 */
 	
+	public List<SaleInfoDTO> findAll(){
+		return saleRepository.findAll().stream().map(sale -> getSaleInfo(sale)).collect(Collectors.toList());
+	}
 	
+	private SaleInfoDTO getSaleInfo(Sale sale){
+		SaleInfoDTO saleInfoDTO = new SaleInfoDTO();
+		saleInfoDTO.setUser(sale.getUser().getName());
+		saleInfoDTO.setData(sale.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyy")));
+		saleInfoDTO.setProducts(getProductInfo(sale.getItems()));
+		
+		return saleInfoDTO;
+	}
+	
+	private List<ProductInfoDTO> getProductInfo(List<ItemSale> items){
+		return items.stream().map(item -> {
+			ProductInfoDTO productInfoDTO = new ProductInfoDTO();
+			productInfoDTO.setDescription(item.getProduct().getDescription());
+			productInfoDTO.setQuantity(item.getQuantity());
+			return productInfoDTO;
+		}).collect(Collectors.toList());
+		
+		
+	}
 	
 	@Transactional
 	public long save(SaleDTO sale) {
