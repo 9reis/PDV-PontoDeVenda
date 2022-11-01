@@ -30,6 +30,21 @@ public class SaleService {
 	private final SaleRepository saleRepository;
 	private final ItemSaleRepository itemSaleRepository;
 	
+	/*
+	 {
+	 "user": "teste",
+	 "data":03/07/22,
+	 "products":[
+	 {
+	 	"description":"notebook",
+	 	"quantity":1
+	 }
+	 ]
+	 }
+	 */
+	
+	
+	
 	@Transactional
 	public long save(SaleDTO sale) {
 		
