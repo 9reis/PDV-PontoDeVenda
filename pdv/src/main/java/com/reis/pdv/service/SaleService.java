@@ -3,6 +3,7 @@ package com.reis.pdv.service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -75,21 +76,21 @@ public class SaleService {
 	@Transactional
 	public long save(SaleDTO sale) {
 		
-		User user = userRepository.findById(sale.getUserid()).get();
-		
-		Sale newSale = new Sale();
-		newSale.setUser(user);
-		newSale.setDate(LocalDate.now());
-		
-		List<ItemSale> itemSale = getItemSale(sale.getItems());
-		
-		newSale = saleRepository.save(newSale);
-		
-		//items
-		saveItemSale(itemSale, newSale);
-		
-		return newSale.getId();
-		
+		User user = userRepository.findById(sale.getUserid())
+				.orElseThrow(() -> new NoItemException("Usuário não encontrado"));
+
+			Sale newSale = new Sale();
+			newSale.setUser(user);
+			newSale.setDate(LocalDate.now());
+			
+			List<ItemSale> itemSale = getItemSale(sale.getItems());
+			
+			newSale = saleRepository.save(newSale);
+			
+			//items
+			saveItemSale(itemSale, newSale);
+			
+			return newSale.getId();
 	}
 	
 	private void saveItemSale(List<ItemSale> items, Sale newSale) {
@@ -100,6 +101,10 @@ public class SaleService {
 	};
 	
 	private List<ItemSale> getItemSale(List<ProductDTO> products) {
+		
+		if( products.isEmpty() ) {
+			throw new InvalidOperationException("Não é possivel adicionar a venda sem itens");
+		}
 		
 		return products.stream().map(item -> {
 			Product product = productRepository.getReferenceById(item.getProductid());
@@ -126,7 +131,8 @@ public class SaleService {
 	}
 
 	public SaleInfoDTO getById(long id) {
-		Sale sale = saleRepository.findById(id).get();
+		Sale sale = saleRepository.findById(id)
+				.orElseThrow(()-> new NoItemException("venda não encontrada"));
 		return getSaleInfo(sale);
 		
 	}
