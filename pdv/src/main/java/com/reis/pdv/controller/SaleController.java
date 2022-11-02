@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.reis.pdv.dto.SaleDTO;
+import com.reis.pdv.exceptions.InvalidOperationException;
+import com.reis.pdv.exceptions.NoItemException;
 import com.reis.pdv.service.SaleService;
 
 @Controller
@@ -38,6 +40,8 @@ public class SaleController {
 		long id = saleService.save(saleDTO);
 		try {
 			return new ResponseEntity<>("Venda realizada com sucesso " + id, HttpStatus.CREATED);
+		}catch(NoItemException | InvalidOperationException error ) {
+			return new ResponseEntity<>(error.getMessage(),HttpStatus.BAD_REQUEST);
 		}catch(Exception error) {
 			return new ResponseEntity<>(error.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
 		}

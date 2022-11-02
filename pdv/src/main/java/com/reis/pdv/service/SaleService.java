@@ -17,6 +17,8 @@ import com.reis.pdv.entity.ItemSale;
 import com.reis.pdv.entity.Product;
 import com.reis.pdv.entity.Sale;
 import com.reis.pdv.entity.User;
+import com.reis.pdv.exceptions.InvalidOperationException;
+import com.reis.pdv.exceptions.NoItemException;
 import com.reis.pdv.repository.ItemSaleRepository;
 import com.reis.pdv.repository.ProductRepository;
 import com.reis.pdv.repository.SaleRepository;
@@ -107,9 +109,10 @@ public class SaleService {
 			itemSale.setQuantity(item.getQuantity());
 			
 			if(product.getQuantity() == 0) {
-				throw new IllegalArgumentException();
+				throw new NoItemException("Produto sem estoque!");
 			}else if ( product.getQuantity() < item.getQuantity()){
-				throw new IllegalArgumentException();
+				throw new InvalidOperationException(String.format("A quantidade de itens da venda (%s) " +
+						"é maior que a quantidade disponível no estoque (%s) ", item.getQuantity() , product.getQuantity()));
 			}
 			
 			int total = product.getQuantity() - item.getQuantity();
