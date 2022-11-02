@@ -1,5 +1,7 @@
 package com.reis.pdv.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -9,7 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.reis.pdv.dto.ResponseDTO;
 import com.reis.pdv.dto.SaleDTO;
+import com.reis.pdv.dto.SaleInfoDTO;
 import com.reis.pdv.exceptions.InvalidOperationException;
 import com.reis.pdv.exceptions.NoItemException;
 import com.reis.pdv.service.SaleService;
@@ -26,13 +30,13 @@ public class SaleController {
 	
 	@GetMapping()
 	public ResponseEntity getAll() {
-		return new ResponseEntity<>(saleService.findAll(), HttpStatus.OK);
+		return new ResponseEntity<>(new ResponseDTO<List<SaleInfoDTO>>("", saleService.findAll()), HttpStatus.OK);
 	}
 	
 	@GetMapping("{id}")
 	public ResponseEntity getById(@PathVariable long id) {
 		try {
-			return new ResponseEntity<>(saleService.getById(id),HttpStatus.OK);
+			return new ResponseEntity<>(new ResponseDTO<SaleInfoDTO>("",saleService.getById(id)),HttpStatus.OK);
 		}catch(NoItemException | InvalidOperationException error ) {
 			return new ResponseEntity<>(error.getMessage(),HttpStatus.BAD_REQUEST);
 		}
@@ -42,11 +46,11 @@ public class SaleController {
 	public ResponseEntity post(@RequestBody SaleDTO saleDTO) {
 		long id = saleService.save(saleDTO);
 		try {
-			return new ResponseEntity<>("Venda realizada com sucesso " + id, HttpStatus.CREATED);
+			return new ResponseEntity<>(new ResponseDTO<>("Venda realizada com sucesso!", id), HttpStatus.CREATED);
 		}catch(NoItemException | InvalidOperationException error ) {
-			return new ResponseEntity<>(error.getMessage(),HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ResponseDTO<>(error.getMessage(),null),HttpStatus.BAD_REQUEST);
 		}catch(Exception error) {
-			return new ResponseEntity<>(error.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(new ResponseDTO<>(error.getMessage(),null),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
 		
