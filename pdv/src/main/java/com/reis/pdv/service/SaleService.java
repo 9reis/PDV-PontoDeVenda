@@ -2,6 +2,7 @@ package com.reis.pdv.service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import com.reis.pdv.dto.ProductDTO;
 import com.reis.pdv.dto.ProductInfoDTO;
@@ -54,22 +56,26 @@ public class SaleService {
 	}
 	
 	private SaleInfoDTO getSaleInfo(Sale sale){
-		SaleInfoDTO saleInfoDTO = new SaleInfoDTO();
-		saleInfoDTO.setUser(sale.getUser().getName());
-		saleInfoDTO.setData(sale.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyy")));
-		saleInfoDTO.setProducts(getProductInfo(sale.getItems()));
-		
-		return saleInfoDTO;
+		return SaleInfoDTO.builder()
+				.user(sale.getUser().getName())
+				.data(sale.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyy")))
+				.products(getProductInfo(sale.getItems()))
+				.build();
 	}
 	
 	private List<ProductInfoDTO> getProductInfo(List<ItemSale> items){
-		return items.stream().map(item -> {
-			ProductInfoDTO productInfoDTO = new ProductInfoDTO();
-			productInfoDTO.setId(item.getId());
-			productInfoDTO.setDescription(item.getProduct().getDescription());
-			productInfoDTO.setQuantity(item.getQuantity());
-			return productInfoDTO;
-		}).collect(Collectors.toList());
+		
+		if(CollectionUtils.isEmpty(items)) {
+			return Collections.emptyList();
+		}
+		
+		return items.stream().map(
+				item -> ProductInfoDTO.builder()
+						.id(item.getId())
+						.description(item.getProduct().getDescription())
+						.quantity(item.getQuantity())
+						.build()
+		).collect(Collectors.toList());
 	}
 	
 	
