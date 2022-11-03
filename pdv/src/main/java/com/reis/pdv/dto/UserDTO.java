@@ -1,5 +1,7 @@
 package com.reis.pdv.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,8 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ProductInfoDTO {
+public class UserDTO {
+	
 	private long id; 
-	private String description;
-	private int quantity;
+	private String name; 
+	private boolean isEnabled; 
+	
 }
