@@ -2,6 +2,7 @@ package com.reis.pdv.controller;
 
 import java.util.Optional;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -53,9 +54,9 @@ public class UserController {
 		try {
 			return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
 		}catch(NoItemException error) {
-			return new ResponseEntity<>(new ResponseDTO<>(error.getMessage(),user), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ResponseDTO(error.getMessage()), HttpStatus.BAD_REQUEST);
 		}catch(Exception error) {
-			return new ResponseEntity<>(new ResponseDTO<>(error.getMessage(),null),HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(new ResponseDTO(error.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
@@ -64,10 +65,11 @@ public class UserController {
 		
 		try {
 			userService.deleteById(id);
-			return new ResponseEntity<>("Usuário removido com sucesso!",HttpStatus.OK);
+			return new ResponseEntity<>(new ResponseDTO("Usuário removico com sucesso"),HttpStatus.OK);
+		}catch(EmptyResultDataAccessException error) {
+			return new ResponseEntity<>(new ResponseDTO("Não foi possivel localizar o usuário!"), HttpStatus.BAD_REQUEST);
 		}catch(Exception error) {
 			return new ResponseEntity<>(error.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-			
 		}
 	}
 	

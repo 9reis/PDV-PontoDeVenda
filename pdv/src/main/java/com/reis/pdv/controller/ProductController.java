@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.reis.pdv.dto.ResponseDTO;
 import com.reis.pdv.entity.Product;
 import com.reis.pdv.repository.ProductRepository;
 
@@ -37,7 +38,7 @@ public class ProductController {
 		try {
 			return new ResponseEntity<>(productRepository.save(product), HttpStatus.CREATED);
 		}catch(Exception error) {
-			return new ResponseEntity<>(error.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(new ResponseDTO(error.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
 	}
@@ -47,7 +48,7 @@ public class ProductController {
 		try {
 			return new ResponseEntity<>(productRepository.save(product),HttpStatus.OK);
 		}catch(Exception error) {
-			return new ResponseEntity<>(error.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(new ResponseDTO(error.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
@@ -55,9 +56,9 @@ public class ProductController {
 	public ResponseEntity delete(@PathVariable Long id) {
 		try {
 			productRepository.deleteById(id);
-			return new ResponseEntity<>("Produto removido com sucesso!",HttpStatus.OK);
+			return new ResponseEntity<>(new ResponseDTO("Produto removido com sucesso!"),HttpStatus.OK);
 		}catch(Exception error) {
-			return new ResponseEntity<>(error.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(new ResponseDTO(error.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
