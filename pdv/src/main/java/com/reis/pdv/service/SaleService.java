@@ -12,7 +12,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import com.reis.pdv.dto.ProductDTO;
+import com.reis.pdv.dto.ProductSaleDTO;
 import com.reis.pdv.dto.ProductInfoDTO;
 import com.reis.pdv.dto.SaleDTO;
 import com.reis.pdv.dto.SaleInfoDTO;
@@ -107,7 +107,7 @@ public class SaleService {
 		}
 	};
 	
-	private List<ItemSale> getItemSale(List<ProductDTO> products) {
+	private List<ItemSale> getItemSale(List<ProductSaleDTO> products) {
 		
 		if( products.isEmpty() ) {
 			throw new InvalidOperationException("Não é possivel adicionar a venda sem itens");

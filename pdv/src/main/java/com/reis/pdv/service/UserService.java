@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.reis.pdv.dto.UserDTO;
@@ -20,6 +21,8 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 	
+	private ModelMapper mapper = new ModelMapper();
+	
 	public List<UserDTO> findAll(){
 		return userRepository.findAll().stream().map(user ->
 			new UserDTO(user.getId(), user.getName(), user.isEnabled())
@@ -27,9 +30,7 @@ public class UserService {
 	}
 	
 	public UserDTO save(UserDTO user) {
-		User userToSave = new User();
-		userToSave.setEnabled(user.isEnabled());
-		userToSave.setName(user.getName());
+		User userToSave = mapper.map(user, User.class);
 		userRepository.save(userToSave);
 		return new UserDTO(userToSave.getId(), userToSave.getName(), userToSave.isEnabled());
 	}
@@ -47,10 +48,7 @@ public class UserService {
 	}
 	
 	public UserDTO update(UserDTO user) {
-		User userToSave = new User();
-		userToSave.setEnabled(user.isEnabled());
-		userToSave.setName(user.getName());
-		userToSave.setId(user.getId());
+		User userToSave = mapper.map(user, User.class);
 		
 		Optional<User> userToEdit = userRepository.findById(userToSave.getId());
 		

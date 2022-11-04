@@ -2,6 +2,7 @@ package com.reis.pdv.controller;
 
 import javax.validation.Valid;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.reis.pdv.dto.ProductDTO;
 import com.reis.pdv.dto.ResponseDTO;
 import com.reis.pdv.entity.Product;
 import com.reis.pdv.repository.ProductRepository;
@@ -20,11 +22,13 @@ import com.reis.pdv.repository.ProductRepository;
 @Controller
 @RequestMapping("/product")
 public class ProductController {
-
+	
+	private ModelMapper mapper;
 	private ProductRepository productRepository;
 	
 	public ProductController(ProductRepository productRepository) {
 		this.productRepository = productRepository;
+		this.mapper = new ModelMapper();
 	}
 	
 	
@@ -36,9 +40,9 @@ public class ProductController {
 	}
 	
 	@PostMapping()
-	public ResponseEntity post(@Valid @RequestBody Product product) {
+	public ResponseEntity post(@Valid @RequestBody ProductDTO product) {
 		try {
-			return new ResponseEntity<>(productRepository.save(product), HttpStatus.CREATED);
+			return new ResponseEntity<>(productRepository.save(mapper.map(product, Product.class)), HttpStatus.CREATED);
 		}catch(Exception error) {
 			return new ResponseEntity<>(new ResponseDTO(error.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -46,9 +50,9 @@ public class ProductController {
 	}
 	
 	@PutMapping()
-	public ResponseEntity put(@Valid @RequestBody Product product) {
+	public ResponseEntity put(@Valid @RequestBody ProductDTO product) {
 		try {
-			return new ResponseEntity<>(productRepository.save(product),HttpStatus.OK);
+			return new ResponseEntity<>(productRepository.save(mapper.map(product, Product.class)),HttpStatus.OK);
 		}catch(Exception error) {
 			return new ResponseEntity<>(new ResponseDTO(error.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
 		}
