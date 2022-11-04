@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.reis.pdv.dto.ResponseDTO;
+import com.reis.pdv.dto.UserDTO;
 import com.reis.pdv.entity.User;
 import com.reis.pdv.service.UserService;
 
@@ -36,7 +37,7 @@ public class UserController {
 	}
 	
 	@PostMapping()
-	public ResponseEntity post(@Valid @RequestBody User user) {
+	public ResponseEntity post(@Valid @RequestBody UserDTO user) {
 		
 		try {
 			user.setEnabled(true);
@@ -48,7 +49,7 @@ public class UserController {
 	}
 	
 	@PutMapping()
-	public ResponseEntity put(@Valid @RequestBody User user) {
+	public ResponseEntity put(@Valid @RequestBody UserDTO user) {
 		try {
 			return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
 		}catch(Exception error) {

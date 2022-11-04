@@ -26,9 +26,12 @@ public class UserService {
 		).collect(Collectors.toList());
 	}
 	
-	public UserDTO save(User user) {
-		userRepository.save(user);
-		return new UserDTO(user.getId(), user.getName(), user.isEnabled());
+	public UserDTO save(UserDTO user) {
+		User userToSave = new User();
+		userToSave.setEnabled(user.isEnabled());
+		userToSave.setName(user.getName());
+		userRepository.save(userToSave);
+		return new UserDTO(userToSave.getId(), userToSave.getName(), userToSave.isEnabled());
 	}
 	
 	public UserDTO findById(long id) {
@@ -43,14 +46,19 @@ public class UserService {
 		return new UserDTO(user.getId(), user.getName(), user.isEnabled());
 	}
 	
-	public UserDTO update(User user) {
-		Optional<User> userToEdit = userRepository.findById(user.getId());
+	public UserDTO update(UserDTO user) {
+		User userToSave = new User();
+		userToSave.setEnabled(user.isEnabled());
+		userToSave.setName(user.getName());
+		userToSave.setId(user.getId());
+		
+		Optional<User> userToEdit = userRepository.findById(userToSave.getId());
 		
 		if(!userToEdit.isPresent()) {
 			throw new NoItemException("Usuario não encontrado");
 		}
-		userRepository.save(user);
-		return new UserDTO(user.getId(), user.getName(), user.isEnabled());
+		userRepository.save(userToSave);
+		return new UserDTO(userToSave.getId(), userToSave.getName(), userToSave.isEnabled());
 	}
 	
 	public void deleteById(long id) {
