@@ -1,6 +1,6 @@
 package com.reis.pdv.controller;
 
-import java.util.Optional;
+import javax.validation.Valid;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.reis.pdv.dto.ResponseDTO;
 import com.reis.pdv.entity.User;
-import com.reis.pdv.exceptions.NoItemException;
-import com.reis.pdv.repository.UserRepository;
 import com.reis.pdv.service.UserService;
 
 @Controller
@@ -38,7 +36,7 @@ public class UserController {
 	}
 	
 	@PostMapping()
-	public ResponseEntity post(@RequestBody User user) {
+	public ResponseEntity post(@Valid @RequestBody User user) {
 		
 		try {
 			user.setEnabled(true);
@@ -50,7 +48,7 @@ public class UserController {
 	}
 	
 	@PutMapping()
-	public ResponseEntity put( @RequestBody User user) {
+	public ResponseEntity put(@Valid @RequestBody User user) {
 		try {
 			return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
 		}catch(Exception error) {

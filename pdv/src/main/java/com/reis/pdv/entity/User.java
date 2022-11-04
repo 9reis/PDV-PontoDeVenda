@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,6 +29,7 @@ public class User {
 	private Long id;
 	
 	@Column(length = 100, nullable = false)
+	@NotBlank(message = "Campo nome é obrigatório")
 	private String name;
 	
 	private boolean isEnabled;

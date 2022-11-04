@@ -1,5 +1,7 @@
 package com.reis.pdv.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -39,7 +41,7 @@ public class SaleController {
 	}
 	
 	@PostMapping()
-	public ResponseEntity post(@RequestBody SaleDTO saleDTO) {
+	public ResponseEntity post(@Valid @RequestBody SaleDTO saleDTO) {
 		try {
 			saleService.save(saleDTO);
 			return new ResponseEntity<>(new ResponseDTO("Venda realizada com sucesso!"), HttpStatus.CREATED);
