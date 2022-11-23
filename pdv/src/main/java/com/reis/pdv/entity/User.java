@@ -15,8 +15,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//@Getter
-//@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -31,6 +29,14 @@ public class User {
 	@Column(length = 100, nullable = false)
 	@NotBlank(message = "Campo nome é obrigatório")
 	private String name;
+	
+	@Column(length = 30, nullable = false)
+	@NotBlank(message = "O campo username é obrigatório")
+	private String username; 
+	
+	@Column(length = 60, nullable = false)
+	@NotBlank(message = "O campo senha é obrigatório ")
+	private String password;
 	
 	private boolean isEnabled;
 	
