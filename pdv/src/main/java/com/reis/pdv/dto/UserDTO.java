@@ -1,6 +1,6 @@
 package com.reis.pdv.dto;
 
-import java.util.List;
+import javax.validation.constraints.NotBlank;
 
 import com.reis.pdv.entity.User;
 
@@ -14,8 +14,11 @@ import lombok.NoArgsConstructor;
 public class UserDTO {
 	
 	private long id; 
+	@NotBlank(message = "Campo nome é obrigatório")
 	private String name; 
+	@NotBlank(message = "O campo username é obrigatório")
 	private String username; 
+	@NotBlank(message = "O campo senha é obrigatório ")
 	private String password;
 	private boolean isEnabled; 
 	

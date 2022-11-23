@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.reis.pdv.dto.UserDTO;
+import com.reis.pdv.dto.UserResponseDTO;
 import com.reis.pdv.entity.User;
 import com.reis.pdv.exceptions.NoItemException;
 import com.reis.pdv.repository.UserRepository;
@@ -24,9 +25,9 @@ public class UserService {
 	
 	private ModelMapper mapper = new ModelMapper();
 	
-	public List<UserDTO> findAll(){
+	public List<UserResponseDTO> findAll(){
 		return userRepository.findAll().stream().map(user ->
-			new UserDTO(user.getId(), user.getName(),user.getUsername(),user.getPassword(), user.isEnabled())
+			new UserResponseDTO(user.getId(), user.getName(),user.getUsername(), user.isEnabled())
 		).collect(Collectors.toList());
 	}
 	

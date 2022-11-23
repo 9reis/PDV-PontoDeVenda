@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.reis.pdv.dto.ResponseDTO;
 import com.reis.pdv.dto.UserDTO;
-import com.reis.pdv.entity.User;
 import com.reis.pdv.service.UserService;
 
 @Controller

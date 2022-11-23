@@ -1,5 +1,7 @@
 package com.reis.pdv.dto;
 
+import javax.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,9 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class ProductSaleDTO {
-
-	private long productid;
 	
+	@NotNull(message = "O item da venda é obrigatório!")
+	private long productid;
+	@NotNull(message = "O campo quantidade é obrigatório")
 	private int quantity;
 	
 }
