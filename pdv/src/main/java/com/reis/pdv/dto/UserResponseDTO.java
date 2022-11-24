@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor	
 public class UserResponseDTO {
 	
-	private long id; 
+	private Long id; 
 	private String name; 
 	private String username; 
 	private boolean isEnabled; 
