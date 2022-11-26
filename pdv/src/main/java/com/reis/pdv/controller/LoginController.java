@@ -11,15 +11,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.reis.pdv.dto.LoginDTO;
 import com.reis.pdv.dto.ResponseDTO;
+import com.reis.pdv.security.CustomUserDetailService;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/login")
+@RequiredArgsConstructor
 public class LoginController {
+	
+	private final CustomUserDetailService userDetailService;	
 	
 	@PostMapping
 	public ResponseEntity post(@Valid @RequestBody LoginDTO loginData) {
 		try {
-			//Verificar se as credenciais são validas
+			
+			userDetailService.verifyUserCredentials(loginData);
 			// Gerar o Token 
 			
 			
