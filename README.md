@@ -8,7 +8,7 @@ Sistema de compas em Java e Spring Boot, utilizando... <br>
 • Bean Validation <br>
 • Model Mapper <br><br>
 
-Onde é possivel <b> Cadastrar. Listar, Editar e Deletar,</b> usuários e produtos , e com a possibilidade de efeturar uma venda, relacionando cliente e produdo! 
+Onde é possivel <b> Cadastra, Listar, Editar e Deletar,</b> usuários e produtos , e com a possibilidade de efeturar uma venda, relacionando cliente e produdo! 
 
 ## USER 
 
